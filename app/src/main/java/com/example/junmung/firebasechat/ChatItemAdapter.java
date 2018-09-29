@@ -23,10 +23,9 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ChatVi
     private Context context;
     private String myName;
 
-    public ChatItemAdapter(String name) {
+    public ChatItemAdapter(String name, ArrayList<UserData> items) {
         myName = name;
-        items = new ArrayList<>();
-        getMessages();
+        this.items = items;
     }
 
     @Override
@@ -59,20 +58,17 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ChatVi
         holder.message.setText(data.getMessage());
     }
 
-    // 메세지를 추가한다.
-    public void addMessage(UserData data){
-        items.add(data);
-        notifyDataSetChanged();
-    }
 
     // FireBase 에서 메세지들을 받아온다.
     public void getMessages(){
+        items.clear();
+        notifyDataSetChanged();
         FirebaseDatabase.getInstance().getReference().child("message").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                items.clear();
-                for(DataSnapshot item : dataSnapshot.getChildren())
+                for(DataSnapshot item : dataSnapshot.getChildren()) {
                     items.add(item.getValue(UserData.class));
+                }
 
                 notifyDataSetChanged();
             }
@@ -94,7 +90,6 @@ public class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ChatVi
             userName = view.findViewById(R.id.item_textView_name);
             message = view.findViewById(R.id.item_textView_message);
             layout_container = view.findViewById(R.id.item_linearLayout_container);
-
         }
     }
 
