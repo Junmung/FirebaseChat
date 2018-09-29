@@ -3,14 +3,13 @@ package com.example.junmung.firebasechat;
 public class UserData {
     private String name;
     private String message;
-    private String uid;
 
     public UserData() {
     }
 
-    public UserData(String name, String uid) {
+    public UserData(String name, String message) {
         this.name = name;
-        this.uid = uid;
+        this.message = message;
     }
 
     public void setMessage(String message) {
@@ -25,7 +24,4 @@ public class UserData {
         return message;
     }
 
-    public String getUid() {
-        return uid;
-    }
 }
